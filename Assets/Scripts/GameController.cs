@@ -9,7 +9,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private int height = 6;
     [SerializeField] private GameObject cellObject;
     [SerializeField] private GameObject gridParent;
-    [SerializeField] private float stepDuration = 0.1f;
+    private float stepDuration = 0.1f;
     private Cell[,] grid;
     private float timer;
 
@@ -17,27 +17,62 @@ public class GameController : MonoBehaviour
     public Color deadCellColor;
     public Color aliveCellColor;
 
+    [Header("Game State")]
+    public bool isPlaying = false;
+    private UIController ui;
+
     // Start is called before the first frame update
     void Start()
     {
         grid = new Cell[width, height];
         gridInit();
         randomPattern();
+        setUpUI();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (timer > stepDuration)
+        if(isPlaying)
         {
-            timer = 0;
-            updateCells();
-        }
-        else
-        {
-            timer += Time.deltaTime;
+            if (timer > stepDuration)
+            {
+                timer = 0;
+                updateCells();
+            }
+            else
+            {
+                timer += Time.deltaTime;
+            }
         }
 
+    }
+
+    private void setUpUI()
+    {
+        ui = GetComponent<UIController>();
+        ui.height = height;
+        ui.width = width;
+        ui.step = stepDuration;
+    }
+
+    public void Generate()
+    {
+        gridDestroy();
+        grid = new Cell[width, height];
+        gridInit();
+        randomPattern();
+    }
+
+    public void Generate(int width, int height, float step)
+    {
+        gridDestroy();
+        this.height = height;
+        this.width = width;
+        stepDuration = step;
+        grid = new Cell[width, height];
+        gridInit();
+        randomPattern();
     }
 
     private void gridInit()
@@ -56,7 +91,22 @@ public class GameController : MonoBehaviour
 
         //Set Camera to Center of the Grid and fit the grid inside view
         Camera.main.transform.position = new Vector3(width / 2, height / 2, -10f);
-        Camera.main.orthographicSize = width > height ? width / 2 : height / 2;
+        if (width == height)
+            Camera.main.orthographicSize = width / 2;
+        else
+            Camera.main.orthographicSize = width > height ? width / 2 : height / 2;
+    }
+
+    private void gridDestroy()
+    {
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                Destroy(grid[x, y].gameObject);
+            }
+        }
+
     }
 
     private void updateCells()

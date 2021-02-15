@@ -13,10 +13,16 @@ public class UIController : MonoBehaviour
     public GameObject helpButton;
     public GameObject mainMenu;
     public GameObject helpMenu;
+    public GameObject settings;
 
-    private void Start()
+    private GameController controller;
+    public int width;
+    public int height;
+    public float step;
+
+    void Start()
     {
-        Time.timeScale = 1.0f;
+        controller = GetComponent<GameController>();
     }
 
     public void Play()
@@ -38,10 +44,11 @@ public class UIController : MonoBehaviour
 
     public void Pause()
     {
-        Time.timeScale = 0.0f;
+        controller.isPlaying = false;
         pauseButton.SetActive(false);
         resumeButton.SetActive(true);
         quitButton.SetActive(true);
+        settings.SetActive(true);
     }
 
     public void Quit()
@@ -55,9 +62,33 @@ public class UIController : MonoBehaviour
 
     public void Resume()
     {
-        Time.timeScale = 1.0f;
+        controller.isPlaying = true;
         pauseButton.SetActive(true);
         resumeButton.SetActive(false);
         quitButton.SetActive(false);
+        settings.SetActive(false);
+    }
+
+    public void SetWidth(string width)
+    {
+        if(width != "")
+            this.width = int.Parse(width);
+    }
+
+    public void SetHeight(string height)
+    {
+        if(height != "")
+            this.height = int.Parse(height);
+    }
+
+    public void SetStep(string step)
+    {
+        if(step != "")
+            this.step = int.Parse(step);
+    }
+
+    public void Generate()
+    {
+        controller.Generate(width, height, step);
     }
 }
