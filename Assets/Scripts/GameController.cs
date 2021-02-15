@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour
     [Header("Cell Properties")]
     public Color deadCellColor;
     public Color aliveCellColor;
+    public int minNeighbours = 2;
+    public int maxNeighbours = 3;
 
     [Header("Game State")]
     public bool isPlaying = false;
@@ -31,6 +33,7 @@ public class GameController : MonoBehaviour
     }
 
     // Update is called once per frame
+    //Update the Grid
     void Update()
     {
         if(isPlaying)
@@ -48,14 +51,18 @@ public class GameController : MonoBehaviour
 
     }
 
+    //Set Up Initial State for UI Controller
     private void setUpUI()
     {
         ui = GetComponent<UIController>();
         ui.height = height;
         ui.width = width;
         ui.step = stepDuration;
+        ui.minNeighbours = minNeighbours;
+        ui.maxNeighbours = maxNeighbours;
     }
 
+    //Generate a new Grid with current settings
     public void Generate()
     {
         gridDestroy();
@@ -64,17 +71,21 @@ public class GameController : MonoBehaviour
         randomPattern();
     }
 
-    public void Generate(int width, int height, float step)
+    //Generate a new Grid with new settings
+    public void Generate(int width, int height, float step, int minNeighbours, int maxNeighbours)
     {
         gridDestroy();
         this.height = height;
         this.width = width;
+        this.minNeighbours = minNeighbours;
+        this.maxNeighbours = maxNeighbours;
         stepDuration = step;
         grid = new Cell[width, height];
         gridInit();
         randomPattern();
     }
 
+    //Initialise a grid
     private void gridInit()
     {
         //Create Cells
@@ -97,6 +108,7 @@ public class GameController : MonoBehaviour
             Camera.main.orthographicSize = width > height ? width / 2 : height / 2;
     }
 
+    //Destroy current grid
     private void gridDestroy()
     {
         for (int y = 0; y < height; y++)
@@ -109,6 +121,7 @@ public class GameController : MonoBehaviour
 
     }
 
+    //Update the cells based on given rules
     private void updateCells()
     {
         //Rules:
@@ -150,6 +163,7 @@ public class GameController : MonoBehaviour
         return liveNeighbours;
     }
 
+    //Create a new random pattern
     private void randomPattern()
     {
         for (int y = 0; y < height; y++)

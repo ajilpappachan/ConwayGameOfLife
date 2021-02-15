@@ -7,13 +7,18 @@ public class Cell : MonoBehaviour
     private bool isAlive = false;
     private int numNeighbours = 0;
     private GameController controller;
+    private int minNeighbours;
+    private int maxNeighbours;
 
     public void cellInit()
     {
         controller = FindObjectOfType<GameController>();
         GetComponent<SpriteRenderer>().color = controller.deadCellColor;
+        minNeighbours = controller.minNeighbours;
+        maxNeighbours = controller.maxNeighbours;
     }
 
+    //Get the number of neighbours and change the current state
     public void setNeighbours(int num)
     {
         //Rules:
@@ -25,20 +30,21 @@ public class Cell : MonoBehaviour
         numNeighbours = num;
         if(isAlive)
         {
-            if(num < 2 || num > 3)
+            if(num < minNeighbours || num > maxNeighbours)
             {
                 setAlive(false);
             }
         }
         else
         {
-            if(num == 3)
+            if(num > minNeighbours && num <= maxNeighbours)
             {
                 setAlive(true);
             }
         }
     }
 
+    //Change the live status and color
     public void setAlive(bool value)
     {
         isAlive = value;
@@ -48,6 +54,7 @@ public class Cell : MonoBehaviour
             GetComponent<SpriteRenderer>().color = controller.deadCellColor;
     }
 
+    //Get the live status of the cell
     public bool IsAlive()
     {
         return isAlive;

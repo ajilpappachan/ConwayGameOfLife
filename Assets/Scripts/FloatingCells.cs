@@ -7,7 +7,9 @@ public class FloatingCells : MonoBehaviour
     ParticleSystem ps;
     public int spawnRate = 3;
     public float speed = 5;
+
     // Start is called before the first frame update
+    //Create a particle system based on given parameters for the background
     void Start()
     {
         ps = GetComponent<ParticleSystem>();
