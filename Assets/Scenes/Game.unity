@@ -2388,7 +2388,7 @@ GameObject:
   - component: {fileID: 1285121226}
   - component: {fileID: 1285121225}
   m_Layer: 5
-  m_Name: WidthInputField
+  m_Name: StepInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2464,7 +2464,7 @@ MonoBehaviour:
   m_LineType: 0
   m_HideMobileInput: 0
   m_CharacterValidation: 0
-  m_CharacterLimit: 2
+  m_CharacterLimit: 3
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
