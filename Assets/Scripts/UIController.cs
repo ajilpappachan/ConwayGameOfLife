@@ -9,10 +9,31 @@ public class UIController : MonoBehaviour
     public GameObject pauseButton;
     public GameObject resumeButton;
     public GameObject quitButton;
+    public GameObject playButton;
+    public GameObject helpButton;
+    public GameObject mainMenu;
+    public GameObject helpMenu;
 
     private void Start()
     {
         Time.timeScale = 1.0f;
+    }
+
+    public void Play()
+    {
+        SceneManager.LoadScene("Game");
+    }
+
+    public void Help()
+    {
+        mainMenu.SetActive(false);
+        helpMenu.SetActive(true);
+    }
+
+    public void BackToMainMenu()
+    {
+        mainMenu.SetActive(true);
+        helpMenu.SetActive(false);
     }
 
     public void Pause()
